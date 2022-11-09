@@ -39,8 +39,14 @@ app.use(
             { url: "/users/anaadminRegister", methods: ["POST"] },
             { url: "/users/adminRegister", methods: ["POST"] },
             { url: "/users/adminLogin", methods: ["POST"] },
+            { url: "/users/userLogin", methods: ["POST"] },
             { url: "/users//getoneUser/:_id", methods: ["GET"] },
             { url: "/users/getallUser", methods: ["GET"] },
+            { url: "/users/getbitzfunUser", methods: ["GET"] },
+            { url: "/users/getblockUser", methods: ["GET"] },
+            { url: "/users/getanatechUser", methods: ["GET"] },
+            { url: "/users/getadminUser", methods: ["GET"] },
+            
             { url: "/users/getUser", methods: ["GET"] },
             { url: "/users/deleteUser/:_id", methods: ["GET"] },
             

@@ -44,7 +44,14 @@ projectDescription:{
     type: String,
     required: true,
 },
-
+password: {
+    type: String,
+    required:true,
+  },
+  confirm_pass: {
+    type: String,
+    required:true,
+  },
 userType: {
     type: String,
     enum : ['From_Anatech','From_Bitzfun','From_Blockzpub','From_AnatechAdmin'],

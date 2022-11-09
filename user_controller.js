@@ -1,7 +1,6 @@
 const bcryptjs = require('bcryptjs');
 const User = require('./model/user_model');
 const Admin = require('./model/adminmodel');
-
 const userService = require('./userService')
 const error = require('./error')
 
@@ -17,7 +16,10 @@ exports.anaRegister = async (req, res, next) => {
     const whatsappNumber = req.body.whatsappNumber
     const skypeId = req.body.skypeId
     const projectDescription = req.body.projectDescription
-   
+    const password1 =req.body.password;
+    const salt = bcryptjs.genSaltSync(10);
+    const password = bcryptjs.hashSync(password1, salt);
+    const confirm_pass = req.body.password1
     const status = req.body.status
     
 
@@ -26,7 +28,7 @@ exports.anaRegister = async (req, res, next) => {
         console.log("try function")
         const userType = "From_Anatech"
         
-        const user = await User.create({ fullName, email, contactNumber, countryCode, telegramId, whatsappNumber, skypeId, projectDescription, userType, status });
+        const user = await User.create({ fullName, email, contactNumber, countryCode, telegramId, whatsappNumber, skypeId, projectDescription, userType, status,password,confirm_pass });
         // req.files.forEach((e) => {
         //     let img=e.filename
         //     rider.path.push(img)
@@ -56,7 +58,10 @@ exports.BitzfunRegister = async (req, res, next) => {
     const whatsappNumber = req.body.whatsappNumber
     const skypeId = req.body.skypeId
     const projectDescription = req.body.projectDescription
-   
+    const password1 =req.body.password;
+    const salt = bcryptjs.genSaltSync(10);
+    const password = bcryptjs.hashSync(password1, salt);
+    const confirm_pass = req.body.password1
     const status = req.body.status
     
 
@@ -65,13 +70,8 @@ exports.BitzfunRegister = async (req, res, next) => {
         console.log("try function")
         const userType = "From_Bitzfun"
         
-        const user = await User.create({ fullName, email, contactNumber, countryCode, telegramId, whatsappNumber, skypeId, projectDescription, userType, status });
-        // req.files.forEach((e) => {
-        //     let img=e.filename
-        //     rider.path.push(img)
-
-        //      });
-        //  rider.save()
+        const user = await User.create({ fullName, email, contactNumber, countryCode, telegramId, whatsappNumber, skypeId, projectDescription, userType, status,password,confirm_pass });
+      
 
         return res.status(201).send(user);
 
@@ -95,7 +95,10 @@ exports.BlockzpubRegister = async (req, res, next) => {
     const whatsappNumber = req.body.whatsappNumber
     const skypeId = req.body.skypeId
     const projectDescription = req.body.projectDescription
-   
+    const password1 =req.body.password;
+    const salt = bcryptjs.genSaltSync(10);
+    const password = bcryptjs.hashSync(password1, salt);
+    const confirm_pass = req.body.password1
     const status = req.body.status
     
 
@@ -104,13 +107,8 @@ exports.BlockzpubRegister = async (req, res, next) => {
         console.log("try function")
         const userType = "From_Blockzpub"
         
-        const user = await User.create({ fullName, email, contactNumber, countryCode, telegramId, whatsappNumber, skypeId, projectDescription, userType, status });
-        // req.files.forEach((e) => {
-        //     let img=e.filename
-        //     rider.path.push(img)
-
-        //      });
-        //  rider.save()
+        const user = await User.create({ fullName, email, contactNumber, countryCode, telegramId, whatsappNumber, skypeId, projectDescription, userType, status,password,confirm_pass });
+      
 
         return res.status(201).send(user);
 
@@ -134,7 +132,10 @@ exports.anaadminRegister = async (req, res, next) => {
     const whatsappNumber = req.body.whatsappNumber
     const skypeId = req.body.skypeId
     const projectDescription = req.body.projectDescription
-   
+    const password1 =req.body.password;
+    const salt = bcryptjs.genSaltSync(10);
+    const password = bcryptjs.hashSync(password1, salt);
+    const confirm_pass = req.body.password1
     const status = req.body.status
     
 
@@ -143,13 +144,8 @@ exports.anaadminRegister = async (req, res, next) => {
         console.log("try function")
         const userType = "From_AnatechAdmin"
         
-        const user = await User.create({ fullName, email, contactNumber, countryCode, telegramId, whatsappNumber, skypeId, projectDescription, userType, status });
-        // req.files.forEach((e) => {
-        //     let img=e.filename
-        //     rider.path.push(img)
-
-        //      });
-        //  rider.save()
+        const user = await User.create({ fullName, email, contactNumber, countryCode, telegramId, whatsappNumber, skypeId, projectDescription, userType, status,password,confirm_pass });
+   
 
         return res.status(201).send(user);
 
@@ -174,6 +170,20 @@ exports.adminLogin = (req, res, next) => {
         });
     });
 };
+
+exports.userLogin = (req, res, next) => {
+    const { email, password } = req.body;
+    userService.userLogin({ email, password }, (error, result) => {
+        if (error) {
+             return next(error);
+        }
+        return res.status(200).send({
+            message: "Success",
+            data: result,
+        });
+    });
+};
+
 
 exports.adminRegister = async(req,res,next) => {
     const email = req.body.email;
@@ -202,6 +212,52 @@ console.log("error")
     }
 };
 
+
+exports.getbitzfunUser = async (req, res, next) => {
+    console.log("all");
+    try {
+        const user = await User.find({ userType: 'From_Bitzfun' })
+        console.log(user)
+        res.json({ data: user,length:user.length })
+    } catch (error) {
+        console.log("error")
+        res.json(error)
+    }
+};
+
+exports.getblockUser = async (req, res, next) => {
+    console.log("all");
+    try {
+        const user = await User.find({ userType: 'From_Blockzpub' })
+        console.log(user)
+        res.json({ data: user,length:user.length })
+    } catch (error) {
+        console.log("error")
+        res.json(error)
+    }
+};
+exports.getanatechUser = async (req, res, next) => {
+    console.log("all");
+    try {
+        const user = await User.find({ userType: 'From_Anatech' })
+        console.log(user)
+        res.json({ data: user,length:user.length })
+    } catch (error) {
+        console.log("error")
+        res.json(error)
+    }
+};
+exports.getadminUser = async (req, res, next) => {
+    console.log("all");
+    try {
+        const user = await User.find({ userType: 'From_AnatechAdmin' })
+        console.log(user)
+        res.json({ data: user,length:user.length })
+    } catch (error) {
+        console.log("error")
+        res.json(error)
+    }
+};
 exports.getoneUser = async (req, res, next) => {
     console.log("one");
     try {
@@ -234,11 +290,11 @@ exports.getUser = async (req, res, next) => {
 
 }
 
-exports.deleteUser = async (req, res, next) => {
+exports.deleteUser = async (req, res) => {
     console.log("one");
     try {
-        const { id } = req.params
-        const individualuser = await User.findOneAndDelete({ _id: id });
+        const { _id } = req.params
+        const individualuser = await User.findOneAndDelete({ _id: _id });
 
         res.status(200).json({ success: true, data: individualuser })
         
